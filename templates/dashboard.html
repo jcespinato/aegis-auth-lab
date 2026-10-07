@@ -5,12 +5,12 @@
     <div class="dash-head">
         <div>
             <p class="eyebrow">SESSION / ACTIVE</p>
-            <h1>Olá, {{ g.user['name'] }}.</h1>
+            <h1>Olá, {{ g.user.name }}.</h1>
             <p>Confira os eventos recentes de autenticação associados à sua conta.</p>
         </div>
         <div class="identity-chip">
             <span>IDENTITY</span>
-            <strong>{{ g.user['username'] }}</strong>
+            <strong>{{ g.user.username }}</strong>
         </div>
     </div>
 
@@ -44,9 +44,9 @@
             {% if events %}
                 {% for event in events %}
                 <div class="event-row">
-                    <span class="event-state {{ 'ok' if event['success'] else 'fail' }}">{{ 'OK' if event['success'] else 'FAIL' }}</span>
-                    <span>{{ event['occurred_at'] }}</span>
-                    <span>{{ event['ip_address'] }}</span>
+                    <span class="event-state {{ 'ok' if event.success else 'fail' }}">{{ 'OK' if event.success else 'FAIL' }}</span>
+                    <span>{{ event.occurred_at|event_time }}</span>
+                    <span>{{ event.source_id }}</span>
                 </div>
                 {% endfor %}
             {% else %}
