@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Aegis Lab — Authentication Interface{% endblock %}
+{% block content %}
+<section class="hero shell">
+    <div class="hero-copy">
+        <p class="eyebrow">AUTHENTICATION / 01</p>
+        <h1>Uma interface de acesso desenhada para ser <em>observada.</em></h1>
+        <p class="hero-text">Uma experiência de autenticação com identidade visual própria, registros de acesso e acompanhamento de eventos em tempo real.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="{{ url_for('register') }}">Criar conta</a>
+            <a class="button ghost" href="{{ url_for('login') }}">Acessar</a>
+        </div>
+    </div>
+
+    <aside class="hero-object" aria-label="Painel visual de autenticação">
+        <div class="object-top">
+            <span>AEGIS</span>
+            <span class="pulse-dot"></span>
+        </div>
+        <div class="object-core">
+            <div class="orb"></div>
+            <p>IDENTITY<br>GATEWAY</p>
+        </div>
+        <div class="object-grid">
+            <span>LOG</span><span>HASH</span><span>SESSION</span>
+            <b>01</b><b>02</b><b>03</b>
+        </div>
+    </aside>
+</section>
+
+<section class="manifest shell">
+    <div class="manifest-title">
+        <span>Aegis</span>
+        <strong>Uma identidade visual direta, funcional e fora do padrão convencional.</strong>
+    </div>
+    <div class="manifest-grid">
+        <article>
+            <span class="num">01</span>
+            <h2>Autenticação</h2>
+            <p>Credenciais protegidas por hash e fluxo de acesso integrado à aplicação.</p>
+        </article>
+        <article>
+            <span class="num">02</span>
+            <h2>Eventos</h2>
+            <p>Cada tentativa registra usuário, resultado, IP, navegador e horário.</p>
+        </article>
+        <article>
+            <span class="num">03</span>
+            <h2>Sessões</h2>
+            <p>Controle de sessão e painel individual com histórico recente de acessos.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}

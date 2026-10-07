@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Criar acesso — Aegis Lab{% endblock %}
+{% block content %}
+<section class="auth-shell shell">
+    <div class="auth-aside">
+        <p class="eyebrow">IDENTITY / ENROLL</p>
+        <h1>Crie uma nova identidade.</h1>
+        <p>Defina seus dados de acesso para criar uma conta e iniciar uma nova sessão.</p>
+        <div class="auth-code">USER // NEW</div>
+    </div>
+    <div class="auth-card">
+        <div class="card-head">
+            <span>Novo acesso</span>
+            <span class="status">READY</span>
+        </div>
+        <form method="post" class="form-grid">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>
+                <span>Nome</span>
+                <input name="name" autocomplete="name" minlength="2" required placeholder="Nome de exibição">
+            </label>
+            <label>
+                <span>Usuário</span>
+                <input name="username" autocomplete="username" minlength="3" required placeholder="seu.usuario">
+            </label>
+            <label>
+                <span>Senha</span>
+                <input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="mínimo 8 caracteres">
+            </label>
+            <button class="button primary full" type="submit">Criar identidade</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

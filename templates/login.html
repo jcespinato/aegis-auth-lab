@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Entrar — Aegis Lab{% endblock %}
+{% block content %}
+<section class="auth-shell shell">
+    <div class="auth-aside">
+        <p class="eyebrow">GATE / AUTH</p>
+        <h1>Acesse sua identidade.</h1>
+        <p>Entre com suas credenciais para abrir sua sessão e visualizar os eventos recentes da conta.</p>
+        <div class="auth-code">AUTH // 7F-21</div>
+    </div>
+    <div class="auth-card">
+        <div class="card-head">
+            <span>Credenciais</span>
+            <span class="status">ACTIVE</span>
+        </div>
+        <form method="post" class="form-grid">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>
+                <span>Usuário</span>
+                <input name="username" autocomplete="username" minlength="3" required placeholder="seu.usuario">
+            </label>
+            <label>
+                <span>Senha</span>
+                <input type="password" name="password" autocomplete="current-password" minlength="8" required placeholder="••••••••">
+            </label>
+            <button class="button primary full" type="submit">Autenticar</button>
+        </form>
+        <p class="microcopy">Ainda não possui conta? <a href="{{ url_for('register') }}">Criar acesso</a>.</p>
+    </div>
+</section>
+{% endblock %}

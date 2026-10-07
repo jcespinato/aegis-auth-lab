@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11120f">
+    <title>{% block title %}Aegis Lab{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='mark.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="noise" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('index') }}" aria-label="Aegis Lab - início">
+            <span class="brand-mark">A</span>
+            <span class="brand-text">AEGIS <b>/LAB</b></span>
+        </a>
+        <nav class="nav">
+            {% if g.user %}
+                <a href="{{ url_for('dashboard') }}">Painel</a>
+                <form action="{{ url_for('logout') }}" method="post" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="nav-button" type="submit">Sair</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}">Entrar</a>
+                <a class="nav-cta" href="{{ url_for('register') }}">Criar acesso</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <span>AEGIS / LAB</span>
+        <span>Authentication Interface • 2026</span>
+    </footer>
+</body>
+</html>
