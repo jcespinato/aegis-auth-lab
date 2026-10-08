@@ -18,6 +18,9 @@
         <nav class="nav">
             {% if g.user %}
                 <a href="{{ url_for('dashboard') }}">Painel</a>
+                {% if g.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}">Auditoria</a>
+                {% endif %}
                 <form action="{{ url_for('logout') }}" method="post" class="inline-form">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button class="nav-button" type="submit">Sair</button>

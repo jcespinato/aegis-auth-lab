@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}Auditoria — Aegis Lab{% endblock %}
+{% block content %}
+<section class="admin-shell shell">
+    <div class="admin-head">
+        <div>
+            <p class="eyebrow">AEGIS / AUTH AUDITOR</p>
+            <h1>Visão de segurança.</h1>
+            <p>Métricas de autenticação, histórico de eventos e avaliação do ambiente ativo.</p>
+        </div>
+        <form action="{{ url_for('run_audit') }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="button primary" type="submit">Executar avaliação</button>
+        </form>
+    </div>
+
+    <div class="metric-grid admin-metrics">
+        <article class="metric">
+            <span>Eventos</span>
+            <strong>{{ total_events }}</strong>
+            <small>tentativas registradas</small>
+        </article>
+        <article class="metric">
+            <span>Falhas</span>
+            <strong>{{ failures }}</strong>
+            <small>acessos negados</small>
+        </article>
+        <article class="metric">
+            <span>Sucessos</span>
+            <strong>{{ successes }}</strong>
+            <small>{{ success_rate }}% dos eventos</small>
+        </article>
+        <article class="metric accent">
+            <span>Origens</span>
+            <strong>{{ unique_sources }}</strong>
+            <small>identificadores distintos</small>
+        </article>
+    </div>
+
+    <div class="admin-grid">
+        <section class="audit-card">
+            <div class="panel-head dark-head">
+                <div>
+                    <span class="eyebrow">POSTURE</span>
+                    <h2>Avaliação atual</h2>
+                </div>
+                {% if latest_audit %}
+                    <span class="score-badge">{{ latest_audit.score }}/100</span>
+                {% endif %}
+            </div>
+            {% if latest_audit %}
+                <div class="audit-summary">
+                    <div>
+                        <span>Classificação</span>
+                        <strong>{{ latest_audit.grade }}</strong>
+                    </div>
+                    <div>
+                        <span>Executado em</span>
+                        <strong>{{ latest_audit.created_at|event_time }}</strong>
+                    </div>
+                </div>
+                <div class="finding-list">
+                    {% for finding in latest_audit.findings %}
+                        <div class="finding-row">
+                            <span class="finding-state {{ 'pass' if finding.passed else 'warn' }}">{{ 'PASS' if finding.passed else 'GAP' }}</span>
+                            <span>{{ finding.label }}</span>
+                            <span>{{ finding.category }}</span>
+                            <strong>{{ finding.weight }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty light-empty">Nenhuma avaliação executada.</div>
+            {% endif %}
+        </section>
+
+        <aside class="history-card">
+            <div class="panel-head dark-head">
+                <div>
+                    <span class="eyebrow">HISTORY</span>
+                    <h2>Execuções</h2>
+                </div>
+            </div>
+            <div class="history-list">
+                {% if audit_history %}
+                    {% for audit in audit_history %}
+                        <div class="history-row">
+                            <div>
+                                <strong>{{ audit.score }}/100</strong>
+                                <span>{{ audit.grade }}</span>
+                            </div>
+                            <small>{{ audit.created_at|event_time }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty light-empty">Sem histórico.</div>
+                {% endif %}
+            </div>
+        </aside>
+    </div>
+
+    <section class="event-panel admin-events">
+        <div class="panel-head">
+            <div>
+                <span class="eyebrow">AUTH EVENT STREAM</span>
+                <h2>Eventos recentes</h2>
+            </div>
+            <span class="status">LIVE DB</span>
+        </div>
+        <div class="event-list">
+            {% if events %}
+                {% for event in events %}
+                    <div class="event-row admin-event-row">
+                        <span class="event-state {{ 'ok' if event.success else 'fail' }}">{{ 'OK' if event.success else 'FAIL' }}</span>
+                        <span>{{ event.username or '—' }}</span>
+                        <span>{{ event.occurred_at|event_time }}</span>
+                        <span>{{ event.source_id }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty">Nenhum evento registrado.</div>
+            {% endif %}
+        </div>
+    </section>
+</section>
+{% endblock %}
