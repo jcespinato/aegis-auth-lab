@@ -222,3 +222,19 @@ button, input { font: inherit; }
     .admin-event-row { grid-template-columns: 60px 1fr; }
     .admin-event-row span:nth-child(3), .admin-event-row span:nth-child(4) { grid-column: 2; }
 }
+
+.protected-metrics { grid-template-columns: repeat(3, 1fr); }
+.protection-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
+.protection-strip > div { border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 7px; background: rgba(255,255,255,.02); }
+.protection-strip span { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+.protection-strip strong { font-size: 16px; }
+.security-event-row { grid-template-columns: 120px 1fr 1.4fr 1fr; }
+@media (max-width: 900px) {
+    .protected-metrics { grid-template-columns: repeat(2, 1fr); }
+    .protection-strip { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+    .protected-metrics, .protection-strip { grid-template-columns: 1fr; }
+    .security-event-row { grid-template-columns: 100px 1fr; }
+    .security-event-row span:nth-child(3), .security-event-row span:nth-child(4) { grid-column: 2; }
+}

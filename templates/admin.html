@@ -4,9 +4,9 @@
 <section class="admin-shell shell">
     <div class="admin-head">
         <div>
-            <p class="eyebrow">AEGIS / AUTH AUDITOR</p>
+            <p class="eyebrow">AEGIS / AUTH LAB</p>
             <h1>Visão de segurança.</h1>
-            <p>Métricas de autenticação, histórico de eventos e avaliação do ambiente ativo.</p>
+            <p>Métricas de autenticação, eventos de proteção e avaliação do ambiente ativo.</p>
         </div>
         <form action="{{ url_for('run_audit') }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -14,7 +14,7 @@
         </form>
     </div>
 
-    <div class="metric-grid admin-metrics">
+    <div class="metric-grid admin-metrics protected-metrics">
         <article class="metric">
             <span>Eventos</span>
             <strong>{{ total_events }}</strong>
@@ -30,12 +30,29 @@
             <strong>{{ successes }}</strong>
             <small>{{ success_rate }}% dos eventos</small>
         </article>
+        <article class="metric">
+            <span>Bloqueios</span>
+            <strong>{{ lock_events }}</strong>
+            <small>limites acionados</small>
+        </article>
+        <article class="metric">
+            <span>Rejeições</span>
+            <strong>{{ blocked_events }}</strong>
+            <small>requisições limitadas</small>
+        </article>
         <article class="metric accent">
-            <span>Origens</span>
-            <strong>{{ unique_sources }}</strong>
-            <small>identificadores distintos</small>
+            <span>Ativos agora</span>
+            <strong>{{ active_locks }}</strong>
+            <small>bloqueios temporários</small>
         </article>
     </div>
+
+    <section class="protection-strip">
+        <div><span>Limite</span><strong>{{ rate_limit_max }} falhas</strong></div>
+        <div><span>Janela</span><strong>{{ rate_limit_window }} s</strong></div>
+        <div><span>Bloqueio</span><strong>{{ rate_limit_lock }} s</strong></div>
+        <div><span>Escopo</span><strong>conta + origem</strong></div>
+    </section>
 
     <div class="admin-grid">
         <section class="audit-card">
@@ -102,8 +119,32 @@
     <section class="event-panel admin-events">
         <div class="panel-head">
             <div>
+                <span class="eyebrow">PROTECTION EVENT STREAM</span>
+                <h2>Eventos de proteção</h2>
+            </div>
+            <span class="status">RATE LIMIT</span>
+        </div>
+        <div class="event-list">
+            {% if security_events %}
+                {% for event in security_events %}
+                    <div class="event-row security-event-row">
+                        <span class="event-state fail">{{ event.kind }}</span>
+                        <span>{{ event.username or '—' }}</span>
+                        <span>{{ event.occurred_at|event_time }}</span>
+                        <span>{{ event.source_id }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty">Nenhum mecanismo de proteção foi acionado.</div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="event-panel admin-events">
+        <div class="panel-head">
+            <div>
                 <span class="eyebrow">AUTH EVENT STREAM</span>
-                <h2>Eventos recentes</h2>
+                <h2>Eventos de autenticação</h2>
             </div>
             <span class="status">LIVE DB</span>
         </div>
